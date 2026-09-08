@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ChiguireTeam — Bots para Discord</title>
+  <meta name="description" content="Bots para Discord de ChiguireTeam: RadarDirecto, CineBotz y AstralBot.">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+
+    :root {
+      --bg: #120b13;
+      --bg-2: #1b101b;
+      --brown: #3b211c;
+      --brown-light: #5b3526;
+      --purple: #7d3cff;
+      --purple-light: #a875ff;
+      --purple-dark: #35195b;
+      --yellow: #ffc83d;
+      --yellow-dark: #c98b20;
+      --cream: #fff4df;
+      --text: #f8edf9;
+      --muted: #cdbdd0;
+      --border: rgba(168, 117, 255, .45);
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 10% 10%, rgba(125,60,255,.12), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(255,200,61,.08), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Nunito", sans-serif;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 76px;
+      background: rgba(18,11,19,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(168,117,255,.25);
+    }
+
+    .nav-container {
+      max-width: 1250px;
+      height: 100%;
+      margin: auto;
+      padding: 0 25px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Baloo 2", sans-serif;
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .logo-mascot {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(145deg,#9d63ff,#4e267b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 6px 20px rgba(125,60,255,.35);
+    }
+
+    .logo span {
+      color: var(--yellow);
+    }
+
+    .logo small {
+      display: block;
+      font-size: 10px;
+      line-height: 10px;
+      color: var(--muted);
+      font-family: "Nunito";
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #d9cce0;
+    }
+
+    .nav-links a {
+      transition: .25s;
+    }
+
+    .nav-links a:hover {
+      color: var(--yellow);
+    }
+
+    .discord-button {
+      padding: 12px 20px;
+      border-radius: 30px;
+      background: var(--yellow);
+      color: #25150c;
+      font-weight: 900;
+      font-size: 14px;
+      box-shadow: 0 7px 25px rgba(255,200,61,.2);
+      transition: .25s;
+    }
+
+    .discord-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255,200,61,.35);
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 570px;
+      position: relative;
+      overflow: hidden;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        radial-gradient(circle at 50% 20%, rgba(125,60,255,.22), transparent 45%),
+        linear-gradient(180deg,#1a0e1d,#120b13);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      opacity: .15;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 500px;
+      height: 500px;
+      background: var(--purple);
+      left: -280px;
+      top: -200px;
+      filter: blur(100px);
+    }
+
+    .hero::after {
+      width: 450px;
+      height: 450px;
+      background: var(--yellow);
+      right: -250px;
+      bottom: -200px;
+      filter: blur(100px);
+    }
+
+    .hero-container {
+      width: min(1150px,92%);
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 1.25fr 1fr;
+      align-items: center;
+      gap: 30px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-mascot {
+      font-size: 160px;
+      text-align: center;
+      filter: drop-shadow(0 20px 20px rgba(0,0,0,.5));
+      animation: floating 4s ease-in-out infinite;
+    }
+
+    .hero-mascot.right {
+      animation-delay: -2s;
+    }
+
+    @keyframes floating {
+      0%,100% {
+        transform: translateY(0) rotate(-2deg);
+      }
+      50% {
+        transform: translateY(-15px) rotate(2deg);
+      }
+    }
+
+    .hero-content {
+      text-align: center;
+    }
+
+    .hero-welcome {
+      color: var(--yellow);
+      font-family: "Baloo 2";
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .hero h1 {
+      font-family: "Baloo 2";
+      font-size: clamp(55px,7vw,92px);
+      line-height: .85;
+      font-weight: 800;
+      margin: 10px 0;
+      letter-spacing: -3px;
+    }
+
+    .hero h1 span {
+      color: var(--yellow);
+    }
+
+    .hero-subtitle {
+      font-family: "Baloo 2";
+      font-size: 25px;
+      color: #eee0ef;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .hero-description {
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: auto;
+      font-size: 16px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border-radius: 30px;
+      font-weight: 900;
+      transition: .25s;
+    }
+
+    .btn-yellow {
+      background: var(--yellow);
+      color: #24140b;
+    }
+
+    .btn-purple {
+      border: 1px solid var(--purple-light);
+      background: rgba(125,60,255,.12);
+      color: #eee4ff;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    /* =========================
+       SECTIONS
+    ========================= */
+
+    section {
+      padding: 90px 20px;
+    }
+
+    .container {
+      width: min(1150px,100%);
+      margin: auto;
+    }
+
+    .section-header {
+      margin-bottom: 45px;
+    }
+
+    .section-kicker {
+      color: var(--yellow);
+      font-family: "Baloo 2";
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .section-title {
+      font-family: "Baloo 2";
+      font-size: clamp(38px,5vw,55px);
+      line-height: 1;
+      margin: 6px 0 12px;
+    }
+
+    .section-description {
+      color: var(--muted);
+      max-width: 700px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       BOTS
+    ========================= */
+
+    .bots-section {
+      background: #130b14;
+    }
+
+    .bots-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+
+    .bot-card {
+      position: relative;
+      overflow: hidden;
+
+      padding: 28px;
+      min-height: 470px;
+
+      border: 1px solid var(--border);
+      border-radius: 20px;
+
+      background:
+        radial-gradient(circle at 90% 10%,rgba(125,60,255,.18),transparent 35%),
+        linear-gradient(145deg,#211226,#150d17);
+
+      box-shadow: var(--shadow);
+      transition: .3s;
+    }
+
+    .bot-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--purple-light);
+      box-shadow: 0 25px 70px rgba(0,0,0,.45);
+    }
+
+    .bot-card.cine {
+      background:
+        radial-gradient(circle at 90% 10%,rgba(255,180,50,.15),transparent 35%),
+        linear-gradient(145deg,#2c1917,#180e12);
+      border-color: rgba(255,190,70,.5);
+    }
+
+    .bot-card.astral {
+      background:
+        radial-gradient(circle at 90% 10%,rgba(130,70,255,.25),transparent 35%),
+        linear-gradient(145deg,#24122f,#150c18);
+    }
+
+    .player {
+      display: inline-block;
+      background: var(--purple);
+      color: white;
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .cine .player {
+      background: var(--yellow);
+      color: #2a180d;
+    }
+
+    .bot-image {
+      height: 145px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 105px;
+      filter: drop-shadow(0 15px 15px rgba(0,0,0,.4));
+      animation: floating 5s ease-in-out infinite;
+    }
+
+    .bot-card:nth-child(2) .bot-image {
+      animation-delay: -1.5s;
+    }
+
+    .bot-card:nth-child(3) .bot-image {
+      animation-delay: -3s;
+    }
+
+    .bot-name {
+      font-family: "Baloo 2";
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .bot-description {
+      color: #d1c3d4;
+      font-size: 14px;
+      line-height: 1.65;
+      min-height: 75px;
+    }
+
+    .bot-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 18px;
+
+      padding: 8px 14px;
+      border-radius: 25px;
+
+      border: 1px solid var(--purple);
+      color: #e9dcff;
+
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cine .bot-tag {
+      border-color: var(--yellow-dark);
+      color: #ffdc7a;
+    }
+
+    .bot-button {
+      position: absolute;
+      bottom: 25px;
+      left: 28px;
+      right: 28px;
+
+      text-align: center;
+
+      padding: 13px;
+      border-radius: 30px;
+
+      background: var(--yellow);
+      color: #26150b;
+
+      font-weight: 900;
+      transition: .25s;
+    }
+
+    .bot-button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 25px rgba(255,200,61,.2);
+    }
+
+    /* =========================
+       COMMUNITY
+    ========================= */
+
+    .community {
+      background:
+        linear-gradient(180deg,#28161b,#211319);
+      border-top: 1px solid rgba(255,200,61,.18);
+      border-bottom: 1px solid rgba(255,200,61,.18);
+    }
+
+    .community-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .community-card {
+      padding: 30px 45px;
+    }
+
+    .community-card + .community-card {
+      border-left: 1px solid rgba(255,200,61,.25);
+    }
+
+    .community-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .community-title {
+      font-family: "Baloo 2";
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .community-text {
+      color: #d3c1c0;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    /* =========================
+       IDEA
+    ========================= */
+
+    .idea-section {
+      position: relative;
+      overflow: hidden;
+      background: #170d13;
+    }
+
+    .idea-section::before {
+      content: "✦";
+      position: absolute;
+      right: 12%;
+      top: 20%;
+      color: var(--yellow);
+      font-size: 50px;
+      opacity: .5;
+    }
+
+    .idea-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .idea-title {
+      font-family: "Baloo 2";
+      font-size: clamp(40px,5vw,60px);
+      line-height: 1;
+      margin: 8px 0 20px;
+    }
+
+    .idea-text {
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 650px;
+      margin-bottom: 25px;
+    }
+
+    .idea-mascot {
+      text-align: center;
+      font-size: 180px;
+      filter: drop-shadow(0 20px 20px rgba(0,0,0,.4));
+      animation: floating 4s infinite ease-in-out;
+    }
+
+    /* =========================
+       INFO
+    ========================= */
+
+    .info-section {
+      background: #100a11;
+    }
+
+    .info-box {
+      border: 1px solid rgba(168,117,255,.25);
+      border-radius: 20px;
+      padding: 30px;
+      background: rgba(255,255,255,.025);
+      margin-bottom: 18px;
+    }
+
+    .info-box h3 {
+      font-family: "Baloo 2";
+      color: var(--yellow);
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .info-box p,
+    .info-box li {
+      color: #cfc1d1;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .info-box ul {
+      padding-left: 20px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      background: #0b070b;
+      border-top: 1px solid rgba(168,117,255,.2);
+      padding: 45px 20px 25px;
+    }
+
+    .footer-grid {
+      width: min(1150px,100%);
+      margin: auto;
+
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    .footer-description {
+      color: #9f91a3;
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 350px;
+      margin-top: 12px;
+    }
+
+    .footer-title {
+      font-family: "Baloo 2";
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: var(--yellow);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: #b9acbd;
+      font-size: 13px;
+    }
+
+    .footer-links a:hover {
+      color: var(--yellow);
+    }
+
+    .copyright {
+      width: min(1150px,100%);
+      margin: 35px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: #716774;
+      font-size: 12px;
+
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 900px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-container {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 80px 20px;
+      }
+
+      .hero-mascot {
+        display: none;
+      }
+
+      .bots-grid {
+        grid-template-columns: 1fr;
+        max-width: 550px;
+        margin: auto;
+      }
+
+      .community-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .community-card + .community-card {
+        border-left: none;
+        border-top: 1px solid rgba(255,200,61,.25);
+      }
+
+      .idea-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .idea-text {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 550px) {
+
+      .navbar {
+        height: 68px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .logo-mascot {
+        width: 40px;
+        height: 40px;
+        font-size: 23px;
+      }
+
+      .discord-button {
+        padding: 9px 13px;
+        font-size: 12px;
+      }
+
+      .hero h1 {
+        font-size: 57px;
+      }
+
+      .hero-subtitle {
+        font-size: 21px;
+      }
+
+      section {
+        padding: 65px 15px;
+      }
+
+      .community-card {
+        padding: 25px 10px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .copyright {
+        flex-direction: column;
+      }
+    }
+
+    /* =========================
+       DECORATIONS
+    ========================= */
+
+    .star {
+      position: absolute;
+      color: var(--yellow);
+      opacity: .5;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    .star.one {
+      left: 8%;
+      top: 25%;
+      font-size: 25px;
+    }
+
+    .star.two {
+      right: 10%;
+      top: 35%;
+      font-size: 35px;
+      animation-delay: .5s;
+    }
+
+    .star.three {
+      left: 20%;
+      bottom: 15%;
+      font-size: 20px;
+      animation-delay: 1s;
+    }
+
+    @keyframes twinkle {
+      from { transform: scale(.7); opacity: .3; }
+      to { transform: scale(1.2); opacity: .8; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       NAVBAR
+  ========================== -->
+
+  <nav class="navbar">
+
+    <div class="nav-container">
+
+      <a href="#" class="logo">
+
+        <div class="logo-mascot">🐹</div>
+
+        <div>
+          Chiguire<span>Team</span>
+          <small>BOTS PARA DISCORD</small>
+        </div>
+
+      </a>
+
+      <div class="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#bots">Bots</a>
+        <a href="#comunidad">Comunidad</a>
+        <a href="#apoya">Apoya</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+
+      <a
+        class="discord-button"
+        href="https://discord.gg/nSmA8N3ZbJ"
+        target="_blank"
+      >
+        💬 Unirme al Discord
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <header class="hero" id="inicio">
+
+    <span class="star one">✦</span>
+    <span class="star two">✦</span>
+    <span class="star three">✧</span>
+
+    <div class="hero-container">
+
+      <div class="hero-mascot">
+        🐹
+      </div>
+
+      <div class="hero-content">
+
+        <div class="hero-welcome">
+          Bienvenido a
+        </div>
+
+        <h1>
+          Chiguire<span>Team</span>
+        </h1>
+
+        <div class="hero-subtitle">
+          Bots para Discord
+        </div>
+
+        <p class="hero-description">
+          Un pequeño equipo de bots con grandes ideas.
+          Haz tu servidor más divertido, útil y activo
+          con nuestros bots.
+        </p>
+
+        <div class="hero-buttons">
+
+          <a href="#bots" class="btn btn-yellow">
+            🤖 Ver bots
+          </a>
+
+          <a
+            href="https://discord.gg/nSmA8N3ZbJ"
+            target="_blank"
+            class="btn btn-purple"
+          >
+            💬 Comunidad
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="hero-mascot right">
+        🐹
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       BOTS
+  ========================== -->
+
+  <section class="bots-section" id="bots">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <div class="section-kicker">
+          🤖 Selección de bot
+        </div>
+
+        <h2 class="section-title">
+          Bots para Discord
+        </h2>
+
+        <p class="section-description">
+          Esta es la sala de espera. Aquí viven nuestros bots,
+          cada uno con su propia función, sus propios comandos
+          y su propio estilo. Elige uno para descubrir qué hace
+          y añadirlo a tu servidor.
+        </p>
+
+      </div>
+
+
+      <div class="bots-grid">
+
+        <!-- BOT 1 -->
+
+        <article class="bot-card">
+
+          <span class="player">
+            Jugador 1
+          </span>
+
+          <div class="bot-image">
+            🐹🎧
+          </div>
+
+          <h3 class="bot-name">
+            RadarDirecto
+          </h3>
+
+          <p class="bot-description">
+            Avisa al instante cuando tus streamers favoritos
+            de Twitch se ponen en vivo. Configura hasta
+            <strong>15 streamers</strong> y no te pierdas ningún directo.
+          </p>
+
+          <div class="bot-tag">
+            🎥 Twitch Alertas
+          </div>
+
+          <a
+            href="https://chiguireteam.cc/bot-streaming"
+            class="bot-button"
+          >
+            ▶ VER BOT
+          </a>
+
+        </article>
+
+
+        <!-- BOT 2 -->
+
+        <article class="bot-card cine">
+
+          <span class="player">
+            Jugador 2
+          </span>
+
+          <div class="bot-image">
+            🐹🍿
+          </div>
+
+          <h3 class="bot-name">
+            CineBotz
+          </h3>
+
+          <p class="bot-description">
+            Tu cartelera personal dentro de Discord.
+            Recomienda una película al día y muestra
+            sinopsis y tráiler cuando lo necesites.
+          </p>
+
+          <div class="bot-tag">
+            🎬 Cine Alertas
+          </div>
+
+          <a
+            href="https://chiguireteam.cc/bot-cine"
+            class="bot-button"
+          >
+            ▶ VER BOT
+          </a>
+
+        </article>
+
+
+        <!-- BOT 3 -->
+
+        <article class="bot-card astral">
+
+          <span class="player">
+            Jugador 3
+          </span>
+
+          <div class="bot-image">
+            🐹🔮
+          </div>
+
+          <h3 class="bot-name">
+            AstralBot
+          </h3>
+
+          <p class="bot-description">
+            El oráculo de tu servidor: recuerda cumpleaños,
+            guarda mensajes de felicitaciones y comparte
+            el horóscopo del día.
+          </p>
+
+          <div class="bot-tag">
+            🎂 Cumpleaños &nbsp; ✦ &nbsp; 🔮 Horóscopo
+          </div>
+
+          <a
+            href="https://chiguireteam.cc/astral-bot"
+            class="bot-button"
+          >
+            ▶ VER BOT
+          </a>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       COMMUNITY / SUPPORT
+  ========================== -->
+
+  <section class="community" id="comunidad">
+
+    <div class="container">
+
+      <div class="community-grid">
+
+        <!-- COMMUNITY -->
+
+        <div class="community-card">
+
+          <div class="community-icon">
+            💬
+          </div>
+
+          <h2 class="community-title">
+            Comunidad
+          </h2>
+
+          <p class="community-text">
+            ¿Tienes dudas o encontraste un fallo?
+            Únete al servidor de Discord de la comunidad
+            para reportar errores, sugerir funciones nuevas
+            o simplemente hablar con otras personas que
+            también usan nuestros bots.
+          </p>
+
+          <a
+            href="https://discord.gg/nSmA8N3ZbJ"
+            target="_blank"
+            class="btn btn-purple"
+          >
+            💬 UNIRME AL DISCORD
+          </a>
+
+        </div>
+
+
+        <!-- SUPPORT -->
+
+        <div class="community-card" id="apoya">
+
+          <div class="community-icon">
+            ☕
+          </div>
+
+          <h2 class="community-title">
+            Apoya los proyectos
+          </h2>
+
+          <p class="community-text">
+            ¿Te sirven los bots?
+            RadarDirecto, CineBotz y AstralBot funcionan
+            24/7 gracias a servidores que cuestan cada mes.
+            No hace falta donar para usarlos, pero cada aporte
+            ayuda a mantenerlos con vida.
+          </p>
+
+          <a
+            href="https://ko-fi.com/ytzippy"
+            target="_blank"
+            class="btn btn-yellow"
+          >
+            ☕ INVITAR UN CAFÉ
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       IDEA / CONTACT
+  ========================== -->
+
+  <section class="idea-section" id="contacto">
+
+    <div class="container">
+
+      <div class="idea-grid">
+
+        <div>
+
+          <div class="section-kicker">
+            💡 ¿Tienes una idea?
+          </div>
+
+          <h2 class="idea-title">
+            ¿Deseas crear<br>
+            tu propio bot?
+          </h2>
+
+          <p class="idea-text">
+            Si tienes una idea para un bot y no sabes por dónde
+            empezar, escríbenos. Nos encanta convertir ideas
+            random en algo que vive dentro de Discord.
+          </p>
+
+          <a
+            href="mailto:chiguireteam@proton.me"
+            class="btn btn-yellow"
+          >
+            ✉️ CONTÁCTANOS
+          </a>
+
+        </div>
+
+        <div class="idea-mascot">
+          🐹💻
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       TERMS & PRIVACY
+  ========================== -->
+
+  <section class="info-section">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <div class="section-kicker">
+          📜 Información legal
+        </div>
+
+        <h2 class="section-title">
+          Términos y privacidad
+        </h2>
+
+      </div>
+
+
+      <!-- TERMS -->
+
+      <div class="info-box" id="terminos">
+
+        <h3>
+          § Términos del Servicio
+        </h3>
+
+        <p>
+          <strong>Última actualización:</strong> septiembre de 2026.
+        </p>
+
+        <br>
+
+        <p>
+          Estos términos aplican al uso de los bots
+          <strong>RadarDirecto</strong>,
+          <strong>CineBotz</strong> y
+          <strong>AstralBot</strong> dentro de Discord.
+        </p>
+
+        <br>
+
+        <h4>1. Aceptación</h4>
+
+        <p>
+          Al añadir cualquiera de los bots a un servidor de Discord,
+          el administrador del servidor y sus miembros aceptan estos
+          términos. Si no estás de acuerdo, debes eliminar el bot
+          del servidor.
+        </p>
+
+        <br>
+
+        <h4>2. Descripción del servicio</h4>
+
+        <p>
+          RadarDirecto notifica cuando streamers de la lista
+          inician transmisión en Twitch. CineBotz recomienda
+          películas y responde comandos relacionados con cine.
+          AstralBot recuerda cumpleaños, permite dejar mensajes
+          que se anuncian junto con la celebración y ofrece
+          horóscopos diarios.
+        </p>
+
+        <br>
+
+        <h4>3. Permisos requeridos</h4>
+
+        <p>
+          Los bots solo solicitan permisos de
+          <strong>Ver Canal</strong> y
+          <strong>Enviar Mensajes</strong>.
+          No solicitan permisos de administración, moderación
+          ni acceso a mensajes privados.
+        </p>
+
+        <br>
+
+        <h4>4. Uso aceptable</h4>
+
+        <p>
+          No está permitido usar los bots para enviar spam,
+          abusar de los comandos de forma automatizada ni
+          intentar explotar fallos del servicio.
+        </p>
+
+        <br>
+
+        <h4>5. Disponibilidad</h4>
+
+        <p>
+          Los bots dependen de servicios de terceros.
+          No garantizamos disponibilidad continua ni la
+          exactitud de la información mostrada.
+        </p>
+
+        <br>
+
+        <h4>6. Limitación de responsabilidad</h4>
+
+        <p>
+          El uso de los bots es bajo tu propio riesgo.
+          No somos responsables por daños indirectos derivados
+          del uso o la imposibilidad de uso del servicio.
+        </p>
+
+        <br>
+
+        <h4>7. Edad mínima</h4>
+
+        <p>
+          El uso de los bots requiere cumplir con los términos
+          de servicio de Discord, que exigen una edad mínima
+          de 13 años o la edad mínima definida por tu jurisdicción.
+        </p>
+
+        <br>
+
+        <h4>8. Cambios en el servicio</h4>
+
+        <p>
+          Podemos modificar, suspender o descontinuar cualquiera
+          de los bots en cualquier momento, con o sin previo aviso.
+        </p>
+
+        <br>
+
+        <h4>9. Contacto</h4>
+
+        <p>
+          Para dudas sobre estos términos:
+          <a href="mailto:chiguireteam@proton.me">
+            chiguireteam@proton.me
+          </a>
+        </p>
+
+      </div>
+
+
+      <!-- PRIVACY -->
+
+      <div class="info-box" id="privacidad">
+
+        <h3>
+          § Política de Privacidad
+        </h3>
+
+        <p>
+          <strong>Última actualización:</strong> septiembre de 2026.
+        </p>
+
+        <br>
+
+        <h4>1. Qué información se recopila</h4>
+
+        <p>
+          Los bots almacenan únicamente lo mínimo necesario
+          para funcionar: el ID del servidor de Discord,
+          el ID del canal configurado y, en el caso de RadarDirecto,
+          los nombres de usuario de Twitch añadidos a la lista
+          de seguimiento, con un máximo de 15 por servidor.
+        </p>
+
+        <br>
+
+        <p>
+          AstralBot almacena además el día y mes de nacimiento
+          que cada usuario registra voluntariamente mediante
+          <strong>/registrar_cumple</strong>, sin almacenar el año.
+        </p>
+
+        <br>
+
+        <h4>2. Qué información NO se recopila</h4>
+
+        <p>
+          No recopilamos datos personales identificables como
+          nombre real, correo, dirección IP asociada a un usuario,
+          historial de mensajes ni datos de pago.
+        </p>
+
+        <br>
+
+        <h4>3. Uso de la información</h4>
+
+        <p>
+          Los datos configurados se utilizan exclusivamente
+          para que los bots funcionen correctamente.
+          No se vende ni se comparte información con terceros
+          con fines comerciales.
+        </p>
+
+        <br>
+
+        <h4>4. Servicios de terceros</h4>
+
+        <p>
+          Para funcionar, los bots consultan las API públicas
+          de Twitch y bases de datos de películas.
+          El uso de estas plataformas está sujeto además
+          a sus propias políticas de privacidad.
+        </p>
+
+        <br>
+
+        <h4>5. Este sitio web</h4>
+
+        <p>
+          Este sitio de presentación no utiliza cookies
+          ni herramientas de rastreo o analítica.
+        </p>
+
+        <br>
+
+        <h4>6. Eliminación de datos</h4>
+
+        <p>
+          Un administrador puede eliminar la configuración
+          de su servidor mediante los comandos correspondientes
+          del bot o expulsando al bot del servidor.
+        </p>
+
+        <br>
+
+        <h4>7. Contacto</h4>
+
+        <p>
+          Para solicitar la eliminación de datos o resolver
+          dudas sobre privacidad:
+          <a href="mailto:chiguireteam@proton.me">
+            chiguireteam@proton.me
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer>
+
+    <div class="footer-grid">
+
+      <div>
+
+        <div class="logo">
+
+          <div class="logo-mascot">
+            🐹
+          </div>
+
+          <div>
+            Chiguire<span>Team</span>
+            <small>BOTS PARA DISCORD</small>
+          </div>
+
+        </div>
+
+        <p class="footer-description">
+          Pequeños bots, grandes momentos.
+          Proyecto independiente creado para hacer
+          los servidores de Discord un poquito más divertidos.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3 class="footer-title">
+          Navegación
+        </h3>
+
+        <div class="footer-links">
+          <a href="#inicio">Inicio</a>
+          <a href="#bots">Bots</a>
+          <a href="#comunidad">Comunidad</a>
+          <a href="#apoya">Apoya los proyectos</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+
+      </div>
+
+
+      <div>
+
+        <h3 class="footer-title">
+          Comunidad
+        </h3>
+
+        <div class="footer-links">
+
+          <a
+            href="https://discord.gg/nSmA8N3ZbJ"
+            target="_blank"
+          >
+            💬 Discord
+          </a>
+
+          <a
+            href="https://ko-fi.com/ytzippy"
+            target="_blank"
+          >
+            ☕ Ko-fi
+          </a>
+
+          <a href="mailto:chiguireteam@proton.me">
+            ✉️ Contacto
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+      <span>
+        © 2026 ChiguireTeam.
+      </span>
+
+      <span>
+        Proyecto independiente, no afiliado a Discord ni a Twitch.
+      </span>
+
+      <span>
+        <a href="#terminos">Términos</a>
+        &nbsp; | &nbsp;
+        <a href="#privacidad">Privacidad</a>
+      </span>
+
+    </div>
+
+  </footer>
+
+
+</body>
+</html>
